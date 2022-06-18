@@ -47,19 +47,19 @@ const renderDonutChart = (elements, watchedState) => {
   const {donutData} = watchedState;
 
   const allDataForChart = donutData.filter((item) => {
-    const {key, name, color, data} = item;
+    const {data} = item;
     if (data) {
-      return item
+      return item;
     }
   });
-  const chartLabels = allDataForChart.map(({name}) => {
-    return name
+  const chartLabels = allDataForChart.map(( { name } ) => {
+    return name;
   });
-  const chartData = allDataForChart.map(({data}) => {
-    return data
+  const chartData = allDataForChart.map(( { data } ) => {
+    return data;
   });
-  const chartColors = allDataForChart.map(({color}) => {
-    return color
+  const chartColors = allDataForChart.map(( { color } ) => {
+    return color;
   });
 
   const donutConfigData = {
@@ -126,9 +126,9 @@ export const legendSetColors = (elements, watchedState) => {
   const { donutData } = watchedState;
 
   donutLegendItems.forEach((item) => {
-    donutData.forEach(({name, color}, index) => {
+    donutData.forEach(( { name, color }, index ) => {
       if(item.getAttribute('data-calc-legend-name') === donutData[index].name){
-        item.style.backgroundColor = donutData[index].color
+        item.style.backgroundColor = donutData[index].color;
       }
     });
   });

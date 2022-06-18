@@ -1,5 +1,4 @@
 import onChange from 'on-change';
-
 import calc from './calc';
 import {render, renderSwitchPmi, renderSwitchTax, legendSetColors} from './render';
 
@@ -28,7 +27,7 @@ const updateValues = (elements, watchedState) => {
   const formData = new FormData(form);
 
   // update values
-  [...formData.entries()].forEach(([key, value]) => {
+  [...formData.entries()].forEach(( [key, value] ) => {
     if (key in values) {
       values[key] = value === '' ? 0 : +value;
     }
@@ -45,10 +44,9 @@ const init = () => {
     resultMortgageAmount: document.querySelector('[data-calc-result="amount"]'),
     resultTotalCost: document.querySelector('[data-calc-result="total"]'),
     resultMonthlyPayment: document.querySelector('[data-calc-result="monthly"]'),
-
     switchPmiBlock: document.querySelectorAll(`[data-pmi-rate]`),
     switchTaxesBlock: document.querySelectorAll(`[data-property-tax]`),
-    // donut
+    // for donut
     donutBox: document.querySelector('[data-calc="donut"]'),
     donutLegendItems: document.querySelectorAll('[data-calc-legend-name]')
   };
@@ -113,18 +111,14 @@ const init = () => {
   };
 
   // MODEL
-  const watchedState = onChange(state, (path, value, prevValue) => {
-    // console.log("STATE", state) ;
-    // console.log("PATH, VALUE", path, value);
-    // console.log("VALUE", value);
-    // console.log("PREV VALUE", prevValue);
+  const watchedState = onChange(state, (path, value) => {
 
     switch(path){
       case "form.exclude.pmi-rate" :
-        renderSwitchPmi(elements, value)
+        renderSwitchPmi(elements, value);
         break;
       case "form.exclude.property-tax" :
-        renderSwitchTax(elements, value)
+        renderSwitchTax(elements, value);
         break;
 
       default :
@@ -139,15 +133,13 @@ const init = () => {
 
   form.addEventListener('submit', (e) => {
     e.preventDefault();
-
     render(elements, watchedState);
   });
 
-  form.addEventListener('change', (e) => {
+  form.addEventListener('change', () => {
     updateValues(elements, watchedState);
     render(elements, watchedState);
   });
-
   // FIRST START
   updateValues(elements, watchedState);
   render(elements, watchedState);

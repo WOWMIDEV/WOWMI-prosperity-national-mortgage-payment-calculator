@@ -1,11 +1,11 @@
 // Set format for results
 const setFormatNumber = (dataFormat) => {
-  return +Math.round(dataFormat)
+  return +Math.round(dataFormat);
 };
 
 // PMI rate -- (PMI-Ипотечное страхование)
 const getPmiResult = (excludeValue, mortgageAmount, pmiRate) => {
-  if(excludeValue === false) {
+  if(!excludeValue) {
     const result = (mortgageAmount * pmiRate) / 12;
     return setFormatNumber(result);
   }
@@ -15,7 +15,7 @@ const getPmiResult = (excludeValue, mortgageAmount, pmiRate) => {
 
 // Property tax function
 const propertyTaxCalc = (excludeValue, propertyTax) => {
-  if(excludeValue === false) {
+  if(!excludeValue) {
     const result = propertyTax / 12;
     return setFormatNumber(result);
   }
@@ -25,7 +25,7 @@ const propertyTaxCalc = (excludeValue, propertyTax) => {
 
 // Home insurance function
 const homeInsuranceCalc = (excludeValue, homeInsurance) => {
-  if(excludeValue === false) {
+  if(!excludeValue) {
     const result = homeInsurance / 12;
     return setFormatNumber(result);
   }
@@ -35,12 +35,12 @@ const homeInsuranceCalc = (excludeValue, homeInsurance) => {
 
 // Monthly function
 const monthlyPaymentCalc = (mortgageAmount, interestRateResult, paymentsMonths, pmiResult, hoaAmount, propertyTaxResult, homeInsuranceResult) => {
-  if(interestRateResult!==0){
+  if(interestRateResult !== 0){
     const result = (mortgageAmount * interestRateResult * (Math.pow(1 + interestRateResult, paymentsMonths)) / (Math.pow(1 + interestRateResult, paymentsMonths) - 1)) + pmiResult + hoaAmount + propertyTaxResult + homeInsuranceResult;
     return setFormatNumber(result);
   }
 
-  return 0
+  return 0;
 };
 
 // Monthly PI function
@@ -99,7 +99,7 @@ const calc = (elements, watchedState) => {
   result['mortgage-total-cost'] = totalCostAmountResult;
 
   // donut data list
-  donutData.forEach(({key, color, data}, index) =>{
+  donutData.forEach(( {key}, index ) =>{
     switch (key) {
       case 'pi':
         donutData[index].data = monthlyPIResult;
