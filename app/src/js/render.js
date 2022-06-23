@@ -1,14 +1,8 @@
-import {
-    Chart,
-    ArcElement,
-    DoughnutController,
-    Tooltip
-} from 'chart.js';
-
+import {Chart, ArcElement, DoughnutController, Tooltip } from 'chart.js';
 Chart.register(
-    ArcElement,
-    DoughnutController,
-    Tooltip
+  ArcElement,
+  DoughnutController,
+  Tooltip,
 );
 // VIEW
 
@@ -16,8 +10,8 @@ Chart.register(
 const renderMortgageAmount = (elements, watchedState) => {
   const { resultMortgageAmount } = elements;
   const { result } = watchedState;
-  if (resultMortgageAmount!==null){
-    resultMortgageAmount.innerHTML = result['mortgage-amount'].toLocaleString('en-US', {minimumFractionDigits: 2});
+  if (resultMortgageAmount !== null) {
+    resultMortgageAmount.innerHTML = result['mortgage-amount'].toLocaleString('en-US', { minimumFractionDigits: 2 });
   }
 };
 
@@ -26,8 +20,8 @@ const renderMonthlyPayment = (elements, watchedState) => {
   const { resultMonthlyPayment } = elements;
   const { result } = watchedState;
 
-  if (resultMonthlyPayment!==null) {
-    resultMonthlyPayment.innerHTML = result['monthly-payment'].toLocaleString('en-US', {minimumFractionDigits: 2});
+  if (resultMonthlyPayment !== null) {
+    resultMonthlyPayment.innerHTML = result['monthly-payment'].toLocaleString('en-US', { minimumFractionDigits: 2 });
   }
 };
 
@@ -36,31 +30,26 @@ const renderTotalCost = (elements, watchedState) => {
   const { resultTotalCost } = elements;
   const { result } = watchedState;
 
-  if (resultTotalCost!==null) {
-    resultTotalCost.innerHTML = result['mortgage-total-cost'].toLocaleString('en-US', {minimumFractionDigits: 2});
+  if (resultTotalCost !== null) {
+    resultTotalCost.innerHTML = result['mortgage-total-cost'].toLocaleString('en-US', { minimumFractionDigits: 2 });
   }
 };
 
 // render donut
 const renderDonutChart = (elements, watchedState) => {
-  const {donutBox} = elements;
-  const {donutData} = watchedState;
+  const { donutBox } = elements;
+  const { donutData } = watchedState;
 
   const allDataForChart = donutData.filter((item) => {
-    const {data} = item;
+    const { data } = item;
     if (data) {
       return item;
     }
+    return 0;
   });
-  const chartLabels = allDataForChart.map(( { name } ) => {
-    return name;
-  });
-  const chartData = allDataForChart.map(( { data } ) => {
-    return data;
-  });
-  const chartColors = allDataForChart.map(( { color } ) => {
-    return color;
-  });
+  const chartLabels = allDataForChart.map(({ name }) => name);
+  const chartData = allDataForChart.map(({ data }) => data);
+  const chartColors = allDataForChart.map(({ color }) => color);
 
   const donutConfigData = {
     labels: chartLabels,
@@ -69,14 +58,14 @@ const renderDonutChart = (elements, watchedState) => {
       backgroundColor: chartColors,
       borderRadius: 5,
       spacing: 5,
-      hoverOffset: 3
-    }]
+      hoverOffset: 3,
+    }],
   };
 
   const config = {
     type: 'doughnut',
     data: donutConfigData,
-    options: []
+    options: [],
   };
 
   const chartStatus = Chart.getChart(donutBox);
@@ -85,40 +74,40 @@ const renderDonutChart = (elements, watchedState) => {
     chartStatus.destroy();
   }
   new Chart(donutBox, config);
-
 };
 
 export const render = (elements, watchedState) => {
-
   // renderMortgageAmount
   renderMortgageAmount(elements, watchedState);
-
   // renderTotalCost
   renderTotalCost(elements, watchedState);
-
   // renderMonthlyPayment
   renderMonthlyPayment(elements, watchedState);
-
   // renderDonutChart
   renderDonutChart(elements, watchedState);
-
 };
 
 export const renderSwitchPmi = (elements, value) => {
   const { switchPmiBlock } = elements;
-  if(value){
-    switchPmiBlock.forEach(item => item.style.display = "none");
+  if (value) {
+    switchPmiBlock.forEach((item) => item.style.display = 'none');
   } else {
-    switchPmiBlock.forEach(item => item.style.display = "block");
+    switchPmiBlock.forEach((item) => item.style.display = 'block');
   }
 };
 export const renderSwitchTax = (elements, value) => {
   const { switchTaxesBlock } = elements;
-    if(value){
-      switchTaxesBlock.forEach(item => item.style.display = "none");
-    } else {
-      switchTaxesBlock.forEach(item => item.style.display = "block");
-    }
+  if (value) {
+    switchTaxesBlock.forEach((item) => {
+      const itemResult = item;
+      itemResult.style.display = 'none'
+    });
+  } else {
+    switchTaxesBlock.forEach((item) =>  {
+      const itemResult = item;
+      itemResult.style.display = 'block'
+    });
+  }
 };
 // set colors in legend
 export const legendSetColors = (elements, watchedState) => {
@@ -126,8 +115,8 @@ export const legendSetColors = (elements, watchedState) => {
   const { donutData } = watchedState;
 
   donutLegendItems.forEach((item) => {
-    donutData.forEach(( { name, color }, index ) => {
-      if(item.getAttribute('data-calc-legend-name') === donutData[index].name){
+    donutData.forEach(({ name, color }, index) => {
+      if (item.getAttribute('data-calc-legend-name') === donutData[index].name) {
         item.style.backgroundColor = donutData[index].color;
       }
     });

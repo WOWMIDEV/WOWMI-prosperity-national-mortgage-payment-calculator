@@ -1,6 +1,6 @@
 import onChange from 'on-change';
 import calc from './calc';
-import {render, renderSwitchPmi, renderSwitchTax, legendSetColors} from './render';
+import { render, renderSwitchPmi, renderSwitchTax, legendSetColors } from './render';
 
 // controller
 
@@ -18,7 +18,6 @@ const updateExclude = (form, watchedState) => {
       exclude[name] = !checked;
     });
   });
-
 };
 
 const updateValues = (elements, watchedState) => {
@@ -27,7 +26,7 @@ const updateValues = (elements, watchedState) => {
   const formData = new FormData(form);
 
   // update values
-  [...formData.entries()].forEach(( [key, value] ) => {
+  [...formData.entries()].forEach(([key, value]) => {
     if (key in values) {
       values[key] = value === '' ? 0 : +value;
     }
@@ -44,17 +43,17 @@ const init = () => {
     resultMortgageAmount: document.querySelector('[data-calc-result="amount"]'),
     resultTotalCost: document.querySelector('[data-calc-result="total"]'),
     resultMonthlyPayment: document.querySelector('[data-calc-result="monthly"]'),
-    switchPmiBlock: document.querySelectorAll(`[data-pmi-rate]`),
-    switchTaxesBlock: document.querySelectorAll(`[data-property-tax]`),
+    switchPmiBlock: document.querySelectorAll('[data-pmi-rate]'),
+    switchTaxesBlock: document.querySelectorAll('[data-property-tax]'),
     // for donut
     donutBox: document.querySelector('[data-calc="donut"]'),
-    donutLegendItems: document.querySelectorAll('[data-calc-legend-name]')
+    donutLegendItems: document.querySelectorAll('[data-calc-legend-name]'),
   };
 
   // MODEL
   const state = {
     form: {
-      values:{
+      values: {
         'home-price': null,
         'down-payment': null,
         'interest-rate': null,
@@ -62,7 +61,7 @@ const init = () => {
         'property-tax': null,
         'pmi-rate': null,
         'hoa-dues': null,
-        term: null
+        term: null,
       },
       exclude: {
         'home-insurance': null,
@@ -81,47 +80,46 @@ const init = () => {
         key: 'pi',
         name: 'P&I',
         color: '#0D93FF',
-        data: null
+        data: null,
       },
       {
         key: 'insurance',
         name: 'Insurance',
         color: '#07BECB',
-        data: null
+        data: null,
       },
       {
         key: 'taxes',
         name: 'Taxes',
         color: '#333333',
-        data: null
+        data: null,
       },
       {
         key: 'pmi',
         name: 'PMI',
         color: '#D3E2EE',
-        data: null
+        data: null,
       },
       {
         key: 'hoa',
         name: 'HOA',
         color: '#F2F2F2',
-        data: null
-      }
-    ]
+        data: null,
+      },
+    ],
   };
 
   // MODEL
   const watchedState = onChange(state, (path, value) => {
-
-    switch(path){
-      case "form.exclude.pmi-rate" :
+    switch (path) {
+      case 'form.exclude.pmi-rate':
         renderSwitchPmi(elements, value);
         break;
-      case "form.exclude.property-tax" :
+      case 'form.exclude.property-tax':
         renderSwitchTax(elements, value);
         break;
 
-      default :
+      default:
         break;
     }
 
@@ -144,7 +142,6 @@ const init = () => {
   updateValues(elements, watchedState);
   render(elements, watchedState);
   legendSetColors(elements, watchedState);
-
 };
 
 init();

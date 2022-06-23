@@ -1,11 +1,9 @@
 // Set format for results
-const setFormatNumber = (dataFormat) => {
-  return +Math.round(dataFormat);
-};
+const setFormatNumber = (dataFormat) => +Math.round(dataFormat);
 
 // PMI rate -- (PMI-Ипотечное страхование)
 const getPmiResult = (excludeValue, mortgageAmount, pmiRate) => {
-  if(!excludeValue) {
+  if (!excludeValue) {
     const result = (mortgageAmount * pmiRate) / 12;
     return setFormatNumber(result);
   }
@@ -15,7 +13,7 @@ const getPmiResult = (excludeValue, mortgageAmount, pmiRate) => {
 
 // Property tax function
 const propertyTaxCalc = (excludeValue, propertyTax) => {
-  if(!excludeValue) {
+  if (!excludeValue) {
     const result = propertyTax / 12;
     return setFormatNumber(result);
   }
@@ -25,7 +23,7 @@ const propertyTaxCalc = (excludeValue, propertyTax) => {
 
 // Home insurance function
 const homeInsuranceCalc = (excludeValue, homeInsurance) => {
-  if(!excludeValue) {
+  if (!excludeValue) {
     const result = homeInsurance / 12;
     return setFormatNumber(result);
   }
@@ -34,9 +32,23 @@ const homeInsuranceCalc = (excludeValue, homeInsurance) => {
 };
 
 // Monthly function
-const monthlyPaymentCalc = (mortgageAmount, interestRateResult, paymentsMonths, pmiResult, hoaAmount, propertyTaxResult, homeInsuranceResult) => {
-  if(interestRateResult !== 0){
-    const result = (mortgageAmount * interestRateResult * (Math.pow(1 + interestRateResult, paymentsMonths)) / (Math.pow(1 + interestRateResult, paymentsMonths) - 1)) + pmiResult + hoaAmount + propertyTaxResult + homeInsuranceResult;
+const monthlyPaymentCalc = (
+  mortgageAmount,
+  interestRateResult,
+  paymentsMonths,
+  pmiResult,
+  hoaAmount,
+  propertyTaxResult,
+  homeInsuranceResult,
+) => {
+  if (interestRateResult !== 0) {
+    const result =
+      (mortgageAmount * interestRateResult * (1 + interestRateResult) ** paymentsMonths) /
+        ((1 + interestRateResult) ** paymentsMonths - 1) +
+      pmiResult +
+      hoaAmount +
+      propertyTaxResult +
+      homeInsuranceResult;
     return setFormatNumber(result);
   }
 
@@ -45,7 +57,9 @@ const monthlyPaymentCalc = (mortgageAmount, interestRateResult, paymentsMonths, 
 
 // Monthly PI function
 const monthlyPICalc = (mortgageAmount, interestRateResult, paymentsMonths) => {
-  const result = mortgageAmount * interestRateResult * (Math.pow(1 + interestRateResult, paymentsMonths)) / (Math.pow(1 + interestRateResult, paymentsMonths) - 1);
+  const result =
+    (mortgageAmount * interestRateResult * (1 + interestRateResult) ** paymentsMonths) /
+    ((1 + interestRateResult) ** paymentsMonths - 1);
 
   return setFormatNumber(result);
 };
@@ -58,7 +72,6 @@ const totalCostAmountCalc = (monthlyPaymentResult, paymentsMonths) => {
 };
 
 const calc = (elements, watchedState) => {
-
   const { form, result, donutData } = watchedState;
   const { values, exclude } = form;
 
@@ -69,18 +82,26 @@ const calc = (elements, watchedState) => {
   const propertyTax = values['property-tax'];
   const pmiRate = values['pmi-rate'];
   const hoaAmount = values['hoa-dues'];
-  const term = values['term'];
+  const { term } = values;
 
   const mortgageAmount = setFormatNumber(homePrice - downPayment); // основной кредит, основная сумма
   const paymentsMonths = term * 12; // количество месяцев
-  const interestRateResult = (interestRate / 100) / 12; // процентная ставка по еж.платежу
+  const interestRateResult = interestRate / 100 / 12; // процентная ставка по еж.платежу
 
   const pmiResult = getPmiResult(exclude['pmi-rate'], mortgageAmount, pmiRate);
 
   const homeInsuranceResult = homeInsuranceCalc(exclude['property-tax'], homeInsurance);
   const propertyTaxResult = propertyTaxCalc(exclude['property-tax'], propertyTax);
 
-  const monthlyPaymentResult = monthlyPaymentCalc(mortgageAmount, interestRateResult, paymentsMonths, pmiResult, hoaAmount, propertyTaxResult, homeInsuranceResult);
+  const monthlyPaymentResult = monthlyPaymentCalc(
+    mortgageAmount,
+    interestRateResult,
+    paymentsMonths,
+    pmiResult,
+    hoaAmount,
+    propertyTaxResult,
+    homeInsuranceResult,
+  );
   const monthlyPIResult = monthlyPICalc(mortgageAmount, interestRateResult, paymentsMonths);
 
   const totalCostAmountResult = totalCostAmountCalc(monthlyPaymentResult, paymentsMonths);
@@ -99,7 +120,7 @@ const calc = (elements, watchedState) => {
   result['mortgage-total-cost'] = totalCostAmountResult;
 
   // donut data list
-  donutData.forEach(( {key}, index ) =>{
+  donutData.forEach(({ key }, index) => {
     switch (key) {
       case 'pi':
         donutData[index].data = monthlyPIResult;
