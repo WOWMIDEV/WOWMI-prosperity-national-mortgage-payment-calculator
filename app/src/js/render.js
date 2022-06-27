@@ -10,7 +10,7 @@ Chart.register(
 const renderMortgageAmount = (elements, watchedState) => {
   const { resultMortgageAmount } = elements;
   const { result } = watchedState;
-  if (resultMortgageAmount !== null) {
+  if (resultMortgageAmount) {
     resultMortgageAmount.innerHTML = result['mortgage-amount'].toLocaleString('en-US', { minimumFractionDigits: 2 });
   }
 };
@@ -20,7 +20,7 @@ const renderMonthlyPayment = (elements, watchedState) => {
   const { resultMonthlyPayment } = elements;
   const { result } = watchedState;
 
-  if (resultMonthlyPayment !== null) {
+  if (resultMonthlyPayment) {
     resultMonthlyPayment.innerHTML = result['monthly-payment'].toLocaleString('en-US', { minimumFractionDigits: 2 });
   }
 };
@@ -30,7 +30,7 @@ const renderTotalCost = (elements, watchedState) => {
   const { resultTotalCost } = elements;
   const { result } = watchedState;
 
-  if (resultTotalCost !== null) {
+  if (resultTotalCost) {
     resultTotalCost.innerHTML = result['mortgage-total-cost'].toLocaleString('en-US', { minimumFractionDigits: 2 });
   }
 };
