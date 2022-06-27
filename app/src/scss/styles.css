@@ -187,7 +187,11 @@
 .calc-wrp .radio__icon {
   transition: all 0.2s;
 }
-.calc-wrp .calculator__graphics {
+.radio__icon {
+  transition: all 0.2s;
+}
+
+.calculator__graphics {
   display: flex;
   flex-direction: column;
   justify-content: space-between;

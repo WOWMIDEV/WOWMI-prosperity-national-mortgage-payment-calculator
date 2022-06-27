@@ -5,6 +5,7 @@
   "source": [
     "./src/index.html"
   ],
+
   "scripts": {
     "clear": "rimraf dist && rimraf .parcel-cache && rimraf development",
     "server": "rimraf development && parcel --port 4444 --dist-dir development",
