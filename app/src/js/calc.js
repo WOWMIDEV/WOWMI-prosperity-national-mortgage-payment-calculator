@@ -83,10 +83,11 @@ const calc = (elements, watchedState) => {
   const pmiRate = values['pmi-rate'];
   const hoaAmount = values['hoa-dues'];
   const { term } = values;
-
+  const monthInYear = 12;
+  const percentBase = 100;
   const mortgageAmount = setFormatNumber(homePrice - downPayment); // основной кредит, основная сумма
-  const paymentsMonths = term * 12; // количество месяцев
-  const interestRateResult = interestRate / 100 / 12; // процентная ставка по еж.платежу
+  const paymentsMonths = term * monthInYear; // количество месяцев
+  const interestRateResult = interestRate / percentBase / monthInYear; // процентная ставка по еж.платежу
 
   const pmiResult = getPmiResult(exclude['pmi-rate'], mortgageAmount, pmiRate);
 
@@ -109,16 +110,12 @@ const calc = (elements, watchedState) => {
   // * RESULTS
   // calcMortgageAmount - сумма ипотеки
   result['mortgage-amount'] = mortgageAmount;
-
   // calcMonthlyPayment - ежемесячный платеж
   result['monthly-payment'] = monthlyPaymentResult;
-
   // calcTotalCost - общая сумма выплат
   result['mortgage-insurance'] = pmiResult;
-
   // Total Cost Of Mortgage
   result['mortgage-total-cost'] = totalCostAmountResult;
-
   // donut data list
   donutData.forEach(({ key }, index) => {
     switch (key) {
